@@ -11,8 +11,8 @@ function getComputerChoice(){
   }
 }
 
-function getHumanChoice(){
-  humanPick = prompt("Choose one, 1 - Rock, 2 - Scissors, 3 - Paper");
+function getHumanChoice(humanPick){
+  // humanPick = prompt("Choose one, 1 - Rock, 2 - Scissors, 3 - Paper");
   if(humanPick == 1){
     return "Rock"
   }
@@ -61,36 +61,57 @@ function playRound(humanChoice, computerChoice) {
   }
 }
 
+const result_div = document.querySelector(".cont-result");
+const add_result = document.createElement("p");
+
 function humanWin(human,computer){
   humanScore+=1;
-  console.log("You win, " + human + " beats " + computer )
+  // console.log("You win, " + human + " beats " + computer )
+  add_result.textContent = "You win, " + human + " beats " + computer ;
+  result_div.appendChild(add_result);
 }
 function humanLose(human,computer){
   computerScore+=1;
-  console.log("You lose, " + human + " lost to " + computer )
+  // console.log("You lose, " + human + " lost to " + computer )
+  add_result.textContent = "You lose, " + human + " lost to " + computer;
+  result_div.appendChild(add_result);
 }
 function humanTied(human,computer){
-  console.log("Tied, You both picked " + human)
+  // console.log("Tied, You both picked " + human)
+  add_result.textContent = "Tied, You both picked " + human;
+  result_div.appendChild(add_result);
 }
 
 humanScore = 0;
 computerScore = 0;
 
-function playGame(){
-  for(var i = 1;i<=5;i++){
-    const humanSelection = getHumanChoice();
-    const computerSelection = getComputerChoice();
-    playRound(humanSelection, computerSelection);
-  }
-  if (humanScore > computerScore){
-    console.log("You win, You scored " + humanScore + " vs " + computerScore)
-  }
-  else if (humanScore < computerScore){
-    console.log("You lose, You scored " + humanScore + " vs " + computerScore)
-  }
-  else{
-    console.log("Tied, " + humanScore + " vs " + computerScore)
-  }
-}
+// button event
+const overall_result = document.createElement("p");
 
-playGame()
+const btn = document.querySelector('.btn-rock');
+btn.addEventListener("click", function (e) {
+  human = getHumanChoice(1);
+  comp = getComputerChoice();
+  playRound(human, comp);
+  console.log(humanScore + " " + computerScore)
+  if(humanScore >5 || computerScore>5){
+    result_div.removeChild(overall_result);
+  }
+  if(humanScore>4){
+    
+    overall_result.textContent = "You are the first to scored 5, You win, " + humanScore + " win against " + computerScore;
+    result_div.appendChild(overall_result);
+    humanScore = 0;
+    computerScore = 0;
+    
+  }
+  else if (computerScore>4){
+    
+    overall_result.textContent = "Computer is the first to scored 5, You lose, " + humanScore + " lost to " + computerScore;
+    result_div.appendChild(overall_result);
+    humanScore = 0;
+    computerScore = 0;
+ 
+  }
+});
+
